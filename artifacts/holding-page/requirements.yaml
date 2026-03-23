@@ -1,0 +1,9 @@
+packages:
+  "framer-motion": "For aggressive, hardware-accelerated brutalist animations and text reveals"
+  "clsx": "For conditional class joining"
+  "tailwind-merge": "For merging tailwind classes safely"
+  "lucide-react": "For crisp, minimal SVG icons"
+
+notes:
+  - Using generated hooks from @workspace/api-client-react as specified
+  - Embracing a raw, dark brutalist aesthetic with electric neon accents
