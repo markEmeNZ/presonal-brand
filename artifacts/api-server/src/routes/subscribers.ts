@@ -1,17 +1,14 @@
 import { Router, type IRouter } from "express";
 import { db, subscribersTable, emailQueueTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
-import { z } from "zod/v4";
-import { getScheduledDates, EMAIL_JOURNEY } from "../lib/emails.js";
+import { CreateSubscriberBody } from "@workspace/api-zod";
+import { getScheduledDates } from "../lib/emails.js";
+import { addSubscriberToList } from "../lib/campaign-monitor.js";
 
 const router: IRouter = Router();
 
-const createSubscriberBodySchema = z.object({
-  email: z.email(),
-});
-
 router.post("/", async (req, res) => {
-  const parsed = createSubscriberBodySchema.safeParse(req.body);
+  const parsed = CreateSubscriberBody.safeParse(req.body);
 
   if (!parsed.success) {
     res.status(422).json({ message: "Please enter a valid email address." });
@@ -38,14 +35,18 @@ router.post("/", async (req, res) => {
       .returning();
 
     const scheduledDates = getScheduledDates(subscriber.createdAt);
-
     const queueEntries = scheduledDates.map((scheduledAt, emailIndex) => ({
       subscriberId: subscriber.id,
       emailIndex,
       scheduledAt,
     }));
-
     await db.insert(emailQueueTable).values(queueEntries);
+
+    try {
+      await addSubscriberToList(subscriber.email);
+    } catch (cmErr) {
+      req.log.warn({ cmErr }, "Campaign Monitor sync failed — subscriber saved locally");
+    }
 
     req.log.info({ subscriberId: subscriber.id }, "New subscriber added");
 
