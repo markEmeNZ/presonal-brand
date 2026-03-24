@@ -24,3 +24,11 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.development]
+CAMPAIGN_MONITOR_API_KEY = "r/kuObpk+R4aORIEfZJZYkEVBbuG04l+TNv8sZ6hBLkZ63BaCIpo5yQ/8YZjdeuEX3PNpCh0c4en3S6Gq94F/eRt8H+DNBM9Uzo0NxId0hPuZfwbX8Wroe+fpekyGynoZupjKb1guSNEjT/PL54SVg=="
+
+[userenv.production]
+CAMPAIGN_MONITOR_API_KEY = "r/kuObpk+R4aORIEfZJZYkEVBbuG04l+TNv8sZ6hBLkZ63BaCIpo5yQ/8YZjdeuEX3PNpCh0c4en3S6Gq94F/eRt8H+DNBM9Uzo0NxId0hPuZfwbX8Wroe+fpekyGynoZupjKb1guSNEjT/PL54SVg=="
