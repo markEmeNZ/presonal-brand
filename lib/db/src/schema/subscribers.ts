@@ -5,10 +5,11 @@ import { z } from "zod/v4";
 export const subscribersTable = pgTable("subscribers", {
   id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
+  unsubscribed: boolean("unsubscribed").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const insertSubscriberSchema = createInsertSchema(subscribersTable).omit({ id: true, createdAt: true });
+export const insertSubscriberSchema = createInsertSchema(subscribersTable).omit({ id: true, createdAt: true, unsubscribed: true });
 export type InsertSubscriber = z.infer<typeof insertSubscriberSchema>;
 export type Subscriber = typeof subscribersTable.$inferSelect;
 
