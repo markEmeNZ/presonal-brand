@@ -131,11 +131,8 @@ export default function Home() {
                 transition={{ duration: 0.5, ease: brutalistEase }}
                 className="w-full h-20 bg-accent text-accent-foreground border-4 border-accent flex items-center px-6 sm:px-8 brutalist-shadow"
               >
-                <p className="font-display text-3xl sm:text-4xl uppercase tracking-wider w-full flex items-center justify-between">
+                <p className="font-display text-3xl sm:text-4xl uppercase tracking-wider w-full">
                   <span>You're in.</span>
-                  <span className="font-mono text-sm sm:text-base font-bold text-accent-foreground/80 tracking-widest text-right">
-                    Check your inbox.
-                  </span>
                 </p>
               </motion.div>
             )}
