@@ -5,6 +5,20 @@ import { CreateSubscriberBody } from "@workspace/api-zod";
 import { getScheduledDates } from "../lib/emails.js";
 import { addSubscriberToList } from "../lib/campaign-monitor.js";
 
+const FORMSPREE_URL = "https://formspree.io/f/xkopngpv";
+
+async function forwardToFormspree(email: string): Promise<void> {
+  const res = await fetch(FORMSPREE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Formspree error ${res.status}: ${body}`);
+  }
+}
+
 const router: IRouter = Router();
 
 router.post("/", async (req, res) => {
@@ -42,11 +56,14 @@ router.post("/", async (req, res) => {
     }));
     await db.insert(emailQueueTable).values(queueEntries);
 
-    try {
-      await addSubscriberToList(subscriber.email);
-    } catch (cmErr) {
-      req.log.warn({ cmErr }, "Campaign Monitor sync failed — subscriber saved locally");
-    }
+    await Promise.allSettled([
+      addSubscriberToList(subscriber.email).catch((cmErr) => {
+        req.log.warn({ cmErr }, "Campaign Monitor sync failed — subscriber saved locally");
+      }),
+      forwardToFormspree(subscriber.email).catch((fsErr) => {
+        req.log.warn({ fsErr }, "Formspree sync failed — subscriber saved locally");
+      }),
+    ]);
 
     req.log.info({ subscriberId: subscriber.id }, "New subscriber added");
 
