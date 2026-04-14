@@ -11,6 +11,14 @@
     <meta property="og:url" content="https://www.personalbrand.co.nz/" />
     <link rel="canonical" href="https://www.personalbrand.co.nz/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      if (!window.location.hostname.includes('personalbrand.co.nz')) {
+        var m = document.createElement('meta');
+        m.name = 'robots';
+        m.content = 'noindex, nofollow';
+        document.head.appendChild(m);
+      }
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
