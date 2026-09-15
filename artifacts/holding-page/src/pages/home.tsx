@@ -150,6 +150,7 @@ export default function Home() {
 
         <div className="mt-10 w-full max-w-3xl space-y-16 text-neutral-400 font-mono text-sm sm:text-base leading-relaxed">
           <section className="space-y-5" aria-label="About Personal Brand">
+            <p>Every name gets searched now. Before a meeting, before a hire, before a deal, sometimes before a date. What comes up is your reputation, whether you built it or not. A personal brand is not ego. It is deciding what people find about you, instead of leaving it to whatever got posted last.</p>
             <p>Personal Brand is a New Zealand personal branding studio from Small But Mighty. We start with a strategy to be seen: where you should show up, what you should be known for, and what to say once you are there. Then we do the work around it.</p>
             <p>It is organic. Showing up consistently in the places your people already look, saying things worth remembering, and making sure that when someone searches your name, what they find is the version of you that you chose.</p>
           </section>
@@ -173,6 +174,16 @@ export default function Home() {
                 </article>
               ))}
             </div>
+          </section>
+
+          <section className="space-y-5" aria-labelledby="what-you-leave-with">
+            <h2 id="what-you-leave-with" className="font-display text-4xl sm:text-5xl text-foreground tracking-wide">WHAT YOU LEAVE WITH</h2>
+            <ul className="space-y-4 list-disc pl-5">
+              <li>One line on what you want to be known for, and the proof to back it up.</li>
+              <li>A clear picture of how you show up everywhere: LinkedIn, the meeting room, the media, and whatever an AI says when someone asks about you.</li>
+              <li>A plan for the next 90 days, with the first three things already done.</li>
+              <li>Someone in your corner who does the work, not just the workshop.</li>
+            </ul>
           </section>
 
           <section className="space-y-5" aria-labelledby="opposite">
