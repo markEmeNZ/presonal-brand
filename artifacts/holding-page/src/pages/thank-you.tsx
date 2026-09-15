@@ -45,7 +45,7 @@ export default function ThankYou() {
           transition={{ duration: 0.5, delay: 0.35, ease }}
           className="text-neutral-400 font-mono text-base sm:text-lg max-w-lg leading-relaxed uppercase tracking-wider mb-12"
         >
-          Watch your inbox. We'll be in touch when something worth saying is ready to be said.
+          Watch your inbox. The guides land first, then the launch.
         </motion.p>
 
         <motion.p
