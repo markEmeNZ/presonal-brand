@@ -13,6 +13,54 @@ function cn(...inputs: ClassValue[]) {
 // Custom aggressive easing for brutalist animations
 const brutalistEase = [0.83, 0, 0.17, 1] as const;
 
+const serviceGroups = [
+  {
+    heading: "FIND OUT WHERE YOU STAND",
+    items: [
+      ["A personal brand stocktake to start", "we search you the way a stranger would, across Google, LinkedIn, social and AI search, and show you exactly what comes up, what is missing, and what is working against you. You get a written report and a short list of what to fix first."],
+      ["A strategy to be seen", "who you need to reach, where they look, and what you need to be known for."],
+      ["A quarterly check in", "what has changed, what is working, and what to do next."],
+    ],
+  },
+  {
+    heading: "BE FOUND",
+    items: [
+      ["Discoverability", "making sure you come up when someone Googles you, searches LinkedIn, or asks an AI who the go to person is."],
+      ["SEO for your name", "owning the first page of Google when someone searches you, and ranking for the thing you want to be known for, not just your name."],
+      ["AI search visibility", "making sure ChatGPT, Gemini and the rest describe you accurately when asked."],
+      ["Your name as a domain", "securing yourname.nz and .co.nz before someone else does, at cost."],
+    ],
+  },
+  {
+    heading: "SAY IT PROPERLY",
+    items: [
+      ["LinkedIn profile rewrite", "headline, about section, featured, and a banner that matches the rest of your brand."],
+      ["Social media set up, done properly", "the right platforms, profiles that say the same thing everywhere, nothing half finished."],
+      ["Social media content strategy", "what to post, how often, and a system so it actually happens."],
+      ["A bio pack", "short, medium and long bios plus a boilerplate, so every introduction, programme and article says the same thing."],
+      ["A speaker or media one pager", "what you talk about, who you have talked to, and how to book you."],
+    ],
+  },
+  {
+    heading: "OWN YOUR SPACE",
+    items: [
+      ["A simple website", "that is yours, not your employer's, so your name has a home online."],
+      ["On brand email on your own domain", "set up on Google Workspace, so you are not sending from a Gmail address."],
+      ["Newsletter set up on Mighty Mail", "the one channel you own that no algorithm can take away."],
+      ["Photography and video", "a proper headshot and a set of images you can use for a year, through a partner photographer."],
+    ],
+  },
+  {
+    heading: "MAKE IT WORK FOR YOU",
+    items: [
+      ["Online reputation management", "what is out there, what should not be, and how to tidy it up."],
+      ["Podcast and media guesting", "a shortlist of shows and publications that reach your audience, and the pitch to get you on."],
+      ["Monetising your profile", "speaking, advisory work, newsletters, courses, partnerships and sponsorship, once you have an audience worth something."],
+      ["Training on content creation", "how to write a post, film yourself on a phone, and keep it going without an agency."],
+    ],
+  },
+] as const;
+
 export default function Home() {
   const [email, setEmail] = useState("");
   const { mutate, isPending, isSuccess, error } = useCreateSubscriber();
@@ -108,28 +156,23 @@ export default function Home() {
 
           <section className="space-y-6" aria-labelledby="what-we-do">
             <h2 id="what-we-do" className="font-display text-4xl sm:text-5xl text-foreground tracking-wide">WHAT WE DO</h2>
-            <ul className="space-y-5 list-none p-0 m-0">
-              <li><strong className="text-accent font-bold">A personal brand stocktake to start:</strong> we search you the way a stranger would, across Google, LinkedIn, social and AI search, and show you exactly what comes up, what is missing, and what is working against you. You get a written report and a short list of what to fix first.</li>
-              <li><strong className="text-accent font-bold">A strategy to be seen:</strong> who you need to reach, where they look, and what you need to be known for.</li>
-              <li><strong className="text-accent font-bold">Social media set up, done properly:</strong> the right platforms, profiles that say the same thing everywhere, nothing half finished.</li>
-              <li><strong className="text-accent font-bold">Social media content strategy:</strong> what to post, how often, and a system so it actually happens.</li>
-              <li><strong className="text-accent font-bold">Discoverability:</strong> making sure you come up when someone Googles you, searches LinkedIn, or asks an AI who the go to person is.</li>
-              <li><strong className="text-accent font-bold">SEO for your name:</strong> owning the first page of Google when someone searches you, and ranking for the thing you want to be known for, not just your name.</li>
-              <li><strong className="text-accent font-bold">AI search visibility:</strong> making sure ChatGPT, Gemini and the rest describe you accurately when asked.</li>
-              <li><strong className="text-accent font-bold">Online reputation management:</strong> what is out there, what should not be, and how to tidy it up.</li>
-              <li><strong className="text-accent font-bold">LinkedIn profile rewrite:</strong> headline, about section, featured, and a banner that matches the rest of your brand.</li>
-              <li><strong className="text-accent font-bold">A simple website that is yours, not your employer's,</strong> so your name has a home online.</li>
-              <li><strong className="text-accent font-bold">Your name as a domain:</strong> securing yourname.nz and .co.nz before someone else does, at cost.</li>
-              <li><strong className="text-accent font-bold">On brand email on your own domain,</strong> set up on Google Workspace, so you are not sending from a Gmail address.</li>
-              <li><strong className="text-accent font-bold">A bio pack:</strong> short, medium and long bios plus a boilerplate, so every introduction, programme and article says the same thing.</li>
-              <li><strong className="text-accent font-bold">A speaker or media one pager:</strong> what you talk about, who you have talked to, and how to book you.</li>
-              <li><strong className="text-accent font-bold">Photography and video:</strong> a proper headshot and a set of images you can use for a year, through a partner photographer.</li>
-              <li><strong className="text-accent font-bold">Newsletter set up on Mighty Mail:</strong> the one channel you own that no algorithm can take away.</li>
-              <li><strong className="text-accent font-bold">Podcast and media guesting:</strong> a shortlist of shows and publications that reach your audience, and the pitch to get you on.</li>
-              <li><strong className="text-accent font-bold">Monetising your profile:</strong> speaking, advisory work, newsletters, courses, partnerships and sponsorship, once you have an audience worth something.</li>
-              <li><strong className="text-accent font-bold">Training on content creation:</strong> how to write a post, film yourself on a phone, and keep it going without an agency.</li>
-              <li><strong className="text-accent font-bold">A quarterly check in:</strong> what has changed, what is working, and what to do next.</li>
-            </ul>
+            <div className="service-card-grid">
+              {serviceGroups.map((group, groupIndex) => (
+                <article className="service-card" key={group.heading}>
+                  <h3>{group.heading}</h3>
+                  <ul>
+                    {group.items.map(([name, explanation], itemIndex) => (
+                      <li key={name}>
+                        <details data-testid={`service-item-${groupIndex}-${itemIndex}`}>
+                          <summary>{name}</summary>
+                          <p>{explanation}</p>
+                        </details>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </section>
 
           <section className="space-y-5" aria-labelledby="opposite">
