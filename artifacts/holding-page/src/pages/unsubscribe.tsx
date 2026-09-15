@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useLocation } from "wouter";
+import { Helmet } from "react-helmet-async";
 
-const ease = [0.83, 0, 0.17, 1];
+const ease = [0.83, 0, 0.17, 1] as const;
 
 type Status = "loading" | "success" | "already" | "error";
 
@@ -44,7 +45,7 @@ export default function Unsubscribe() {
     success: {
       heading: "YOU'RE OUT.",
       sub: email
-        ? `${email} has been removed from our list. No hard feelings — the door's open if you change your mind.`
+        ? `${email} has been removed from our list. No hard feelings. The door's open if you change your mind.`
         : "You've been removed from our list. No hard feelings.",
       accent: true,
     },
@@ -61,7 +62,12 @@ export default function Unsubscribe() {
   const { heading, sub, accent } = content[status];
 
   return (
-    <div className="relative min-h-screen w-full bg-background flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden">
+    <>
+      <Helmet>
+        <title>Unsubscribe | Personal Brand</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="relative min-h-screen w-full bg-background flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden">
       <div className="absolute inset-0 z-0 bg-noise mix-blend-difference pointer-events-none" />
 
       <main className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-start">
@@ -97,6 +103,7 @@ export default function Unsubscribe() {
           ← Back
         </motion.a>
       </main>
-    </div>
+      </div>
+    </>
   );
 }

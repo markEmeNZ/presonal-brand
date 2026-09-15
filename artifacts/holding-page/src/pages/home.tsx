@@ -4,13 +4,14 @@ import { ArrowRight, Loader2, AlertTriangle } from "lucide-react";
 import { useCreateSubscriber } from "@/hooks/use-subscribers";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Helmet } from "react-helmet-async";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // Custom aggressive easing for brutalist animations
-const brutalistEase = [0.83, 0, 0.17, 1];
+const brutalistEase = [0.83, 0, 0.17, 1] as const;
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -24,14 +25,19 @@ export default function Home() {
 
   // Determine error message based on common API patterns
   const errorMessage = error
-    // @ts-expect-error - ErrorType might not expose status directly depending on generation, but typically axios/fetch wrappers do
     ? error.status === 409 || error?.response?.status === 409
       ? "YOU'RE ALREADY ON THE LIST."
       : "INVALID SIGNAL. CHECK YOUR EMAIL."
     : null;
 
   return (
-    <div className="relative min-h-screen w-full bg-background flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden">
+    <>
+      <Helmet>
+        <title>Personal Brand: Personal Branding for NZ Professionals</title>
+        <meta name="description" content="Personal branding, personal websites and LinkedIn for New Zealand professionals. A Small But Mighty brand. Join the launch list." />
+        <link rel="canonical" href="https://www.personalbrand.co.nz/" />
+      </Helmet>
+      <div className="relative min-h-screen w-full bg-background flex flex-col items-center justify-center px-6 py-12 sm:p-12 overflow-x-hidden">
       {/* Noise Texture Overlay */}
       <div className="absolute inset-0 z-0 bg-noise mix-blend-difference"></div>
       
@@ -39,18 +45,19 @@ export default function Home() {
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neutral-900/40 via-background to-background pointer-events-none"></div>
 
       <main className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-start">
+        <h1 className="sr-only">Personal branding for people who want to be known.</h1>
         
         {/* Animated Headline Reveal */}
         <div className="mb-12 md:mb-16 overflow-hidden">
-          <motion.h1 
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
+          <motion.h2 
+            initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
             transition={{ duration: 0.7, ease: brutalistEase }}
             className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[7rem] leading-[0.85] text-foreground m-0 p-0 tracking-tight"
           >
             YOUR BRAND IS <br />
             <span className="text-accent">ALREADY TALKING.</span>
-          </motion.h1>
+          </motion.h2>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -63,7 +70,7 @@ export default function Home() {
         </div>
 
         {/* Dynamic Form Area */}
-        <div className="w-full max-w-2xl h-[120px] relative">
+        <div className="w-full max-w-2xl min-h-[120px] relative">
           <AnimatePresence mode="wait">
             {!isSuccess ? (
               <motion.form
@@ -139,7 +146,21 @@ export default function Home() {
           </AnimatePresence>
         </div>
 
+        <section
+          className="mt-10 max-w-2xl space-y-4 text-neutral-500 font-mono text-[0.68rem] sm:text-xs font-bold uppercase tracking-wider leading-relaxed"
+          aria-label="About Personal Brand"
+        >
+          <p>Personal Brand is a New Zealand personal branding studio from Small But Mighty. We build the whole thing: a brand identity built around your name, a personal website you own, your LinkedIn and social profiles set up properly, and the ads that put you in front of the right people.</p>
+          <p>It is for anyone whose name is the thing people search for. Business owners and directors, consultants and advisers, sports people, creatives, and people looking for their next role. If you are known for what you do but your online presence is not doing you justice, this is for you.</p>
+          <p>We are based in Marlborough and Wellington and work with people across New Zealand. The full site is coming soon. Drop your email above and you will be first to see it.</p>
+        </section>
+
       </main>
+      <footer className="relative z-10 w-full max-w-4xl mx-auto mt-12 text-neutral-600 font-mono text-[0.65rem] uppercase tracking-widest">
+        A <a href="https://www.smallbutmighty.nz/" className="hover:text-neutral-400 transition-colors">Small But Mighty</a> brand ·{" "}
+        <a href="mailto:hello@personalbrand.co.nz" className="hover:text-neutral-400 transition-colors">hello@personalbrand.co.nz</a>
+      </footer>
     </div>
+    </>
   );
 }

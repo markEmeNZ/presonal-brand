@@ -1,11 +1,17 @@
 import { motion } from "framer-motion";
 import { CheckCheck } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
-const ease = [0.83, 0, 0.17, 1];
+const ease = [0.83, 0, 0.17, 1] as const;
 
 export default function ThankYou() {
   return (
-    <div className="relative min-h-screen w-full bg-background flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden">
+    <>
+      <Helmet>
+        <title>Thank You | Personal Brand</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="relative min-h-screen w-full bg-background flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden">
       <div className="absolute inset-0 z-0 bg-noise mix-blend-difference pointer-events-none" />
 
       <main className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-start">
@@ -51,6 +57,7 @@ export default function ThankYou() {
           personalbrand.co.nz
         </motion.p>
       </main>
-    </div>
+      </div>
+    </>
   );
 }

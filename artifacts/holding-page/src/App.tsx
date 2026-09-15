@@ -1,5 +1,6 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import Home from "./pages/home";
 import ThankYou from "./pages/thank-you";
 import Unsubscribe from "./pages/unsubscribe";
@@ -15,7 +16,12 @@ const queryClient = new QueryClient({
 
 function NotFound() {
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center relative">
+    <>
+      <Helmet>
+        <title>Page Not Found | Personal Brand</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center relative">
       <div className="absolute inset-0 z-0 bg-noise mix-blend-difference pointer-events-none" />
       <h1 className="font-display text-8xl md:text-[10rem] text-accent leading-none m-0">404</h1>
       <p className="font-mono font-bold text-xl text-neutral-400 mt-4 uppercase tracking-widest">
@@ -27,7 +33,8 @@ function NotFound() {
       >
         GO BACK
       </a>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -45,9 +52,11 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-        <Router />
-      </WouterRouter>
+      <HelmetProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <Router />
+        </WouterRouter>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 }
