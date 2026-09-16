@@ -1,21 +1,19 @@
 import { Router, type IRouter } from "express";
-import { db, subscribersTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { forwardToFormspree } from "../lib/formspree.js";
 
 const router: IRouter = Router();
 
-function decodeToken(token: string): number | null {
+function decodeToken(token: string): string | null {
   try {
-    const decoded = Buffer.from(token, "base64url").toString("utf-8");
-    const id = parseInt(decoded, 10);
-    return isNaN(id) ? null : id;
+    const email = Buffer.from(token, "base64url").toString("utf-8");
+    return email.includes("@") ? email : null;
   } catch {
     return null;
   }
 }
 
-export function encodeToken(subscriberId: number): string {
-  return Buffer.from(String(subscriberId)).toString("base64url");
+export function encodeToken(email: string): string {
+  return Buffer.from(email).toString("base64url");
 }
 
 router.get("/", async (req, res) => {
@@ -26,37 +24,18 @@ router.get("/", async (req, res) => {
     return;
   }
 
-  const subscriberId = decodeToken(token);
+  const email = decodeToken(token);
 
-  if (!subscriberId) {
+  if (!email) {
     res.status(400).json({ message: "Invalid unsubscribe link." });
     return;
   }
 
   try {
-    const [subscriber] = await db
-      .select()
-      .from(subscribersTable)
-      .where(eq(subscribersTable.id, subscriberId))
-      .limit(1);
+    await forwardToFormspree({ email, request: "unsubscribe" });
 
-    if (!subscriber) {
-      res.status(404).json({ message: "Subscriber not found." });
-      return;
-    }
-
-    if (subscriber.unsubscribed) {
-      res.json({ message: "already_unsubscribed", email: subscriber.email });
-      return;
-    }
-
-    await db
-      .update(subscribersTable)
-      .set({ unsubscribed: true })
-      .where(eq(subscribersTable.id, subscriberId));
-
-    req.log.info({ subscriberId }, "Subscriber unsubscribed");
-    res.json({ message: "unsubscribed", email: subscriber.email });
+    req.log.info({ email }, "Unsubscribe request forwarded");
+    res.json({ message: "unsubscribed", email });
   } catch (err) {
     req.log.error({ err }, "Failed to unsubscribe");
     res.status(500).json({ message: "Something went wrong." });

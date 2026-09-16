@@ -278,7 +278,7 @@ export function getScheduledDates(signupDate: Date): Date[] {
   });
 }
 
-export function getUnsubscribeUrl(subscriberId: number): string {
-  const token = encodeToken(subscriberId);
+export function getUnsubscribeUrl(email: string): string {
+  const token = encodeToken(email);
   return `${SITE_URL}/unsubscribe?token=${token}`;
 }
